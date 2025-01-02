@@ -25,6 +25,8 @@ class HlsQualitySelector extends Plugin {
    *         An optional options object.
    * @param {boolean} [options.largestResolutionFirst]
    *        If true, the quality selector will sort the resolutions from largest to smallest.
+   * @param {boolean} [options.disableAutoQuality]
+   *       If true, the quality selector will not include the 'auto' option.
    * @param {boolean} [options.displayCurrentQuality]
    *       If true, the quality selector will display the current resolution.
    * @param {string} [options.vjsIconClass]
@@ -162,11 +164,13 @@ class HlsQualitySelector extends Plugin {
       return 0;
     });
 
-    levelItems.push(this.getQualityMenuItem.call(this, {
-      label: this.player.localize('Auto'),
-      value: 'auto',
-      selected: true
-    }));
+    if (!this.options.disableAutoQuality) {
+      levelItems.push(this.getQualityMenuItem.call(this, {
+        label: this.player.localize('Auto'),
+        value: 'auto',
+        selected: true
+      }));
+    }
 
     if (this._qualityButton) {
       this._qualityButton.createItems = () => {
