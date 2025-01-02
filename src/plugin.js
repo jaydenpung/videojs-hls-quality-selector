@@ -23,6 +23,14 @@ class HlsQualitySelector extends Plugin {
    *
    * @param  {Object} [options]
    *         An optional options object.
+   * @param {boolean} [options.largestResolutionFirst]
+   *        If true, the quality selector will sort the resolutions from largest to smallest.
+   * @param {boolean} [options.displayCurrentQuality]
+   *       If true, the quality selector will display the current resolution.
+   * @param {string} [options.vjsIconClass]
+   *      The icon class to use for the quality selector button.
+   * @param {number} [options.placementIndex]
+   *     The index at which to place the quality selector button.
    *
    *         While not a core part of the Video.js plugin architecture, a
    *         second argument of options is a convenient way to accept inputs
@@ -136,11 +144,20 @@ class HlsQualitySelector extends Plugin {
       if ((typeof current !== 'object') || (typeof next !== 'object')) {
         return -1;
       }
-      if (current.item.value < next.item.value) {
-        return -1;
-      }
-      if (current.item.value > next.item.value) {
-        return 1;
+      if (this.options.largestResolutionFirst) {
+        if (current.item.value > next.item.value) {
+          return -1;
+        }
+        if (current.item.value < next.item.value) {
+          return 1;
+        }
+      } else {
+        if (current.item.value < next.item.value) {
+          return -1;
+        }
+        if (current.item.value > next.item.value) {
+          return 1;
+        }
       }
       return 0;
     });
