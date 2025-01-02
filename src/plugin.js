@@ -29,6 +29,8 @@ class HlsQualitySelector extends Plugin {
    *       If true, the quality selector will not include the 'auto' option.
    * @param {boolean} [options.displayCurrentQuality]
    *       If true, the quality selector will display the current resolution.
+   * @param {number} [options.defaultQuality]
+   *       The default quality to set.
    * @param {string} [options.vjsIconClass]
    *      The icon class to use for the quality selector button.
    * @param {number} [options.placementIndex]
@@ -135,8 +137,13 @@ class HlsQualitySelector extends Plugin {
       }).length) {
         const levelItem = this.getQualityMenuItem.call(this, {
           label: pixels + 'p',
-          value: pixels
+          value: pixels,
+          selected: this.options.defaultQuality === pixels
         });
+
+        if (this.options.defaultQuality === pixels) {
+          this.setQuality(pixels);
+        }
 
         levelItems.push(levelItem);
       }
